@@ -21,7 +21,7 @@ class PHP(object):
 		return stdout
 	
 	def new(self, class_name, *args):
-		return self.__getattr__('new ' + class_name)(*args)
+		return getattr(self, 'new ' + class_name)(*args)
 
 	def _add_statement(self, stmt):
 		self._statements.append(stmt)
