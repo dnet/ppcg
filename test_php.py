@@ -42,6 +42,12 @@ class TestPHP(unittest.TestCase):
 		output = str(php)
 		self.assertEquals(output, str(len(self.TEST_STRING)))
 
+	def test_deep_compose(self):
+		php = PHP()
+		php.echo(php.strlen(php.strrev(self.TEST_STRING)))
+		output = str(php)
+		self.assertEquals(output, str(len(self.TEST_STRING)))
+
 	def test_repr(self):
 		php = PHP()
 		self.assertEquals(repr(php), '<PHP object with 0 statement(s)>')

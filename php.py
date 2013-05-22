@@ -29,9 +29,10 @@ class PHP(object):
 
 	def _align_statement(self, stmt):
 		if self._queue:
-			self._statements.remove(stmt)
-			idx = self._statements.index(self._queue[-1])
-			self._statements.insert(idx, stmt)
+			s_idx = self._statements.index(stmt)
+			leader = self._queue[0]
+			self._statements.remove(leader)
+			self._statements.insert(s_idx + 1, leader)
 
 	def __getattr__(self, name):
 		stmt = Statement(self, name)
