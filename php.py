@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
+from __future__ import with_statement
 from itertools import imap
 from subprocess import Popen, PIPE
+from threading import RLock
 
 class PHP(object):
 	def __init__(self, php_executable='php'):
@@ -49,6 +51,7 @@ class PhpError(RuntimeError):
 
 class Statement(object):
 	VARNUM = 0
+	VARNUM_LOCK = RLock()
 
 	def __init__(self, php, contents):
 		self.php = php
@@ -61,8 +64,9 @@ class Statement(object):
 	def _get_php(self):
 		if self.retval_in is None:
 			self.php._align_statement(self)
-			self.retval_in = '$v{0}'.format(Statement.VARNUM)
-			Statement.VARNUM += 1
+			with self.VARNUM_LOCK:
+				self.retval_in = '$v{0}'.format(Statement.VARNUM)
+				Statement.VARNUM += 1
 			self.contents = self.retval_in + ' = ' + self.contents
 		return self.retval_in
 
