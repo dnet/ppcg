@@ -95,7 +95,7 @@ class Token(object):
 	def __getattr__(self, name):
 		stmt = Statement(self.php, self.stmt._get_php() + '->' + name)
 		self.php._add_statement(stmt)
-		return Token(self.php, stmt) 
+		return Token(self.php, stmt)
 
 
 def format_value(value):
