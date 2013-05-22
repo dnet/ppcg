@@ -36,6 +36,12 @@ class TestPHP(unittest.TestCase):
 		php.var_dump(5)
 		self.assertEquals(str(php), 'int(5)\n')
 
+	def test_compose(self):
+		php = PHP()
+		php.echo(php.strlen(self.TEST_STRING))
+		output = str(php)
+		self.assertEquals(output, str(len(self.TEST_STRING)))
+
 	def test_repr(self):
 		php = PHP()
 		self.assertEquals(repr(php), '<PHP object with 0 statement(s)>')

@@ -7,6 +7,7 @@ class PHP(object):
 	def __init__(self, php_executable='php'):
 		self._statements = []
 		self._php_exec = php_executable
+		self._queue = []
 
 	def __str__(self):
 		php = Popen([self._php_exec], stdin=PIPE, stdout=PIPE, stderr=PIPE)
@@ -26,8 +27,14 @@ class PHP(object):
 	def _add_statement(self, stmt):
 		self._statements.append(stmt)
 
+	def _align_statement(self, stmt):
+		if self._queue:
+			self._statements.remove(stmt)
+			idx = self._statements.index(self._queue[-1])
+			self._statements.insert(idx, stmt)
+
 	def __getattr__(self, name):
-		stmt = Statement(name)
+		stmt = Statement(self, name)
 		self._add_statement(stmt)
 		return Token(self, stmt)
 
@@ -42,7 +49,8 @@ class PhpError(RuntimeError):
 class Statement(object):
 	VARNUM = 0
 
-	def __init__(self, contents):
+	def __init__(self, php, contents):
+		self.php = php
 		self.contents = contents
 		self.retval_in = None
 	
@@ -51,6 +59,7 @@ class Statement(object):
 
 	def _get_php(self):
 		if self.retval_in is None:
+			self.php._align_statement(self)
 			self.retval_in = '$v{0}'.format(Statement.VARNUM)
 			Statement.VARNUM += 1
 			self.contents = self.retval_in + ' = ' + self.contents
@@ -66,15 +75,17 @@ class Token(object):
 		self.stmt = stmt
 	
 	def __call__(self, *args):
+		self.php._queue.append(self.stmt)
 		self.stmt.append('({args})'.format(
 			args=', '.join(imap(format_value, args))))
+		self.php._queue.pop()
 		return self
 
 	def _get_php(self):
 		return self.stmt._get_php()
 
 	def __getattr__(self, name):
-		stmt = Statement(self.stmt._get_php() + '->' + name)
+		stmt = Statement(self.php, self.stmt._get_php() + '->' + name)
 		self.php._add_statement(stmt)
 		return Token(self.php, stmt) 
 
