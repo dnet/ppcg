@@ -97,6 +97,12 @@ class Token(object):
 		self.php._add_statement(stmt)
 		return Token(self.php, stmt)
 
+	def __getitem__(self, name):
+		stmt = Statement(self.php, self.stmt._get_php() +
+				'[' + format_value(name) + ']')
+		self.php._add_statement(stmt)
+		return Token(self.php, stmt)
+
 
 def format_value(value):
 	if isinstance(value, basestring):

@@ -68,5 +68,21 @@ class TestPHP(unittest.TestCase):
 		expected = ','.join(sorted(self.TEST_DICT.itervalues()))
 		self.assertEquals(str(php), expected)
 
+	def test_getitem(self):
+		php = PHP()
+		array_params = range(self.TEST_RANGE)
+		array = php.array(*array_params)
+		php.echo(array[0])
+		self.assertEquals(str(php), str(array_params[0]))
+
+	def test_dyn_getitem(self):
+		php = PHP()
+		array_params = range(self.TEST_RANGE)
+		array = php.array(*array_params)
+		php.shuffle(array)
+		php.echo(array[array[0]])
+		self.assertIn(int(str(php)), array_params)
+
+
 if __name__ == '__main__':
     unittest.main()
