@@ -31,6 +31,9 @@ class PHP(object):
 		self._add_statement(stmt)
 		return Token(self, stmt)
 
+	def __repr__(self):
+		return '<PHP object with {0} statement(s)>'.format(len(self._statements))
+
 
 class PhpError(RuntimeError):
 	pass
