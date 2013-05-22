@@ -6,7 +6,7 @@ from time import time
 import unittest
 
 class TestPHP(unittest.TestCase):
-	TEST_STRING = 'foobar\n'
+	TEST_STRING = 'foobar"\\\'\n'
 	def test_echo(self):
 		php = PHP()
 		php.echo(self.TEST_STRING)
