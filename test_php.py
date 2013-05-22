@@ -52,6 +52,13 @@ class TestPHP(unittest.TestCase):
 		php = PHP()
 		self.assertEquals(repr(php), '<PHP object with 0 statement(s)>')
 
+	TEST_RANGE = 6
+	def test_list(self):
+		php = PHP()
+		php.echo(php.count(range(self.TEST_RANGE)))
+		output = str(php)
+		self.assertEquals(output, str(self.TEST_RANGE))
+
 
 if __name__ == '__main__':
     unittest.main()

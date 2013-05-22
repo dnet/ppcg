@@ -102,5 +102,7 @@ def format_value(value):
 		return 'null'
 	elif isinstance(value, (Statement, Token)):
 		return value._get_php()
+	elif isinstance(value, list):
+		return 'array({items})'.format(items=', '.join(imap(format_value, value)))
 	else:
 		return str(value)
