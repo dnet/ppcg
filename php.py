@@ -10,7 +10,7 @@ class PHP(object):
 
 	def __str__(self):
 		php = Popen([self._php_exec], stdin=PIPE, stdout=PIPE, stderr=PIPE)
-		php.stdin.write('<?')
+		php.stdin.write('<?\n')
 		for stmt in self._statements:
 			php.stdin.write(str(stmt))
 		php.stdin.write('?>');
