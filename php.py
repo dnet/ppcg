@@ -31,8 +31,11 @@ class PHP(object):
 
 	def _align_statement(self, stmt):
 		if self._queue:
-			s_idx = self._statements.index(stmt)
 			leader = self._queue[0]
+			q_idx = self._statements.index(leader)
+			s_idx = self._statements.index(stmt)
+			if q_idx > s_idx:
+				return
 			self._statements.remove(leader)
 			self._statements.insert(s_idx + 1, leader)
 
