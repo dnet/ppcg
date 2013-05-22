@@ -103,6 +103,13 @@ class Token(object):
 		self.php._add_statement(stmt)
 		return Token(self.php, stmt)
 
+	def __add__(self, value):
+		stmt = Statement(self.php, self.stmt._get_php() +
+				(' . ' if isinstance(value, basestring) else ' + ') +
+				format_value(value))
+		self.php._add_statement(stmt)
+		return Token(self.php, stmt)
+
 
 def format_value(value):
 	if isinstance(value, basestring):

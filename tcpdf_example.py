@@ -25,7 +25,7 @@ def main():
 	y = pdf.GetY()
 	pdf.setXY(30, 30)
 	pdf.Cell(0, 0, 'GOTOs are bad')
-	pdf.setXY(x, y)
+	pdf.setXY(x, y + 2.5)
 	pdf.Cell(0, 0, 'I can has PHP variables')
 
 	pdf.Output()

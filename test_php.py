@@ -83,6 +83,13 @@ class TestPHP(unittest.TestCase):
 		php.echo(array[array[0]])
 		self.assertIn(int(str(php)), array_params)
 
+	TEST_VALUE = 42
+	def test_add(self):
+		php = PHP()
+		array = php.range(1, self.TEST_RANGE)
+		php.echo(php.count(array) + self.TEST_VALUE)
+		self.assertEquals(str(php), str(self.TEST_VALUE + self.TEST_RANGE))
+
 
 if __name__ == '__main__':
     unittest.main()
