@@ -9,12 +9,14 @@ class PHP(object):
 		self._php_exec = php_executable
 
 	def __str__(self):
-		php = Popen([self._php_exec], stdin=PIPE, stdout=PIPE)
+		php = Popen([self._php_exec], stdin=PIPE, stdout=PIPE, stderr=PIPE)
 		php.stdin.write('<?')
 		for stmt in self._statements:
 			php.stdin.write(str(stmt))
 		php.stdin.write('?>');
-		stdout, _ = php.communicate()
+		stdout, stderr = php.communicate()
+		if php.returncode != 0:
+			raise PhpError(stderr)
 		self._statements = []
 		return stdout
 	
@@ -29,6 +31,9 @@ class PHP(object):
 		self._add_statement(stmt)
 		return Token(self, stmt)
 
+
+class PhpError(RuntimeError):
+	pass
 
 class Statement(object):
 	VARNUM = 0
