@@ -38,6 +38,7 @@ class PHP(object):
 class PhpError(RuntimeError):
 	pass
 
+
 class Statement(object):
 	VARNUM = 0
 
