@@ -3,7 +3,7 @@
 from php import PHP
 
 def main():
-	php = PHP('php')
+	php = PHP()
 	php.include('tcpdf/config/lang/eng.php')
 	php.include('tcpdf/tcpdf.php')
 
