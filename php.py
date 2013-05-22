@@ -16,7 +16,7 @@ class PHP(object):
 		php.stdin.write('<?\n')
 		for stmt in self._statements:
 			php.stdin.write(str(stmt))
-		php.stdin.write('?>')
+		php.stdin.write('?>\n')
 		stdout, stderr = php.communicate()
 		if php.returncode != 0:
 			raise PhpError(stderr)
