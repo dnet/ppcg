@@ -36,6 +36,10 @@ class TestPHP(unittest.TestCase):
 		php.var_dump(5)
 		self.assertEquals(str(php), 'int(5)\n')
 
+	def test_repr(self):
+		php = PHP()
+		self.assertEquals(repr(php), '<PHP object with 0 statement(s)>')
+
 
 if __name__ == '__main__':
     unittest.main()
