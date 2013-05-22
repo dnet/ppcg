@@ -104,5 +104,8 @@ def format_value(value):
 		return value._get_php()
 	elif isinstance(value, list):
 		return 'array({items})'.format(items=', '.join(imap(format_value, value)))
+	elif isinstance(value, dict):
+		return 'array({items})'.format(items=', '.join(' => '.join(
+			imap(format_value, item)) for item in value.iteritems()))
 	else:
 		return str(value)

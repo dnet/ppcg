@@ -59,6 +59,14 @@ class TestPHP(unittest.TestCase):
 		output = str(php)
 		self.assertEquals(output, str(self.TEST_RANGE))
 
+	TEST_DICT = {'foo': 'bar', 2: 'qux'}
+	def test_dict(self):
+		php = PHP()
+		values = php.array_values(self.TEST_DICT)
+		php.sort(values)
+		php.echo(php.implode(',', values))
+		expected = ','.join(sorted(self.TEST_DICT.itervalues()))
+		self.assertEquals(str(php), expected)
 
 if __name__ == '__main__':
     unittest.main()
