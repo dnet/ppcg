@@ -93,20 +93,19 @@ class Token(object):
 		return self.stmt._get_php()
 
 	def __getattr__(self, name):
-		stmt = Statement(self.php, self.stmt._get_php() + '->' + name)
-		self.php._add_statement(stmt)
-		return Token(self.php, stmt)
+		return self._handle_op('{left}->' + name)
 
 	def __getitem__(self, name):
-		stmt = Statement(self.php, self.stmt._get_php() +
-				'[' + format_value(name) + ']')
-		self.php._add_statement(stmt)
-		return Token(self.php, stmt)
+		return self._handle_op('{left}[{right}]', name)
 
 	def __add__(self, value):
-		stmt = Statement(self.php, self.stmt._get_php() +
+		return self._handle_op('{left}' +
 				(' . ' if isinstance(value, basestring) else ' + ') +
-				format_value(value))
+				'{right}', value)
+
+	def _handle_op(self, fmt, value=None):
+		stmt = Statement(self.php, fmt.format(
+			left=self.stmt._get_php(), right=format_value(value)))
 		self.php._add_statement(stmt)
 		return Token(self.php, stmt)
 
